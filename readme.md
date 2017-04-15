@@ -52,7 +52,7 @@ Celem zadania jest napisanie skryptu, wyświetlającego ostatnie odwiedziny na s
  1. Stwórz formularz w html, który przesyła metodą `POST` dane do pliku `pdf.php` (ten plik stworzymy w kolejnych zadaniach)
  2. Formularz powinien być dodany do pliku `form.php` w katalogu `includes`
  3. Dołącz ten plik do głównej strony, aby mieć podgląd w trakcie tworzenia formularza
- 4. Formularz powinien zawierać:  
+ 4. Formularz powinien zawierać:
     * Lotnisko wylotu - pole `select`
     * Lotnisko przylotu - pole `select`
     * Czas startu - pole `datetime-local` (będzie to czas wylotu w czasie lokalnym lotniska)

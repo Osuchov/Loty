@@ -1,3 +1,10 @@
+<?php
+include './includes/visits.php';
+include './includes/airports.php';
+include './includes/form.php';
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
