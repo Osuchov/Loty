@@ -14,12 +14,17 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             $code_from = $airports[$_POST['from']]['code'];
             $code_to = $airports[$_POST['to']]['code'];
             
-            $date_from = new DateTime ($date);
+            $date_from = new DateTime();
             $date_from->setTimezone($timezone_from);
-            $date_from->format('DD.MM.RRRR GG:MM:SS');
-            $date_to = $date_from->modify('+'.$lenght.' hours');
-            $date_to -> setTimezone($timezone_to); 
+            $date_from->modify($date);
+            $date1 = $date_from->format('d.m.Y H:i:s');
+        
+            $date_to = new DateTime();
+            $date_to -> setTimezone($timezone_to);
+            $date_to -> modify($date.'+'.$lenght.' hours');
+            $date2 = $date_to->format('d.m.Y H:i:s');
     }
+    var_dump($date_from);
     var_dump($date_to);
 }
 ?>
@@ -40,12 +45,12 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             <th colspan="3">Lotnisko wylotu</th>
             <th colspan="3">Lotnisko przylotu</th>
             <th>Czas lotu</th>
-            <th>Cena lotu</th>            
+            <th>Cena lotu</th>
         </tr>
         <?php echo '
         <tr>
-            <td>'.$from.'</td><td>'.$date_from->date.'</td><td>'.$code_from.'</td>
-            <td>'.$to.'</td><td>'.$date_to->date.'</td><td>'.$code_to.'</td>
+            <td>'.$from.'</td><td>'.$date1.'</td><td>'.$code_from.'</td>
+            <td>'.$to.'</td><td>'.$date2.'</td><td>'.$code_to.'</td>
             <td>'.$lenght.'</td>
             <td>'.$price.'</td>
         </tr>';
