@@ -1,7 +1,7 @@
 <?php
 include './includes/airports.php';
 require_once './vendor/autoload.php';
-require_once './vendor/autoload.php';
+use NumberToWords\NumberToWords;
 
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     if (isset($_POST['from']) && isset($_POST['to']) && isset($_POST['date']) && 
@@ -28,6 +28,12 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             $date2 = $date_to->format('d.m.Y H:i:s');
             
             $person = generatePassenger();
+            
+            // create the number to words "manager" class
+            $numberToWords = new NumberToWords();
+            // build a new number transformer using the RFC 3066 language identifier
+            $currencyTransformer = $numberToWords->getCurrencyTransformer('pl');
+            $price_word = $currencyTransformer->toWords($price*100, 'PLN');
     }
 //    var_dump($date_from);
 //    var_dump($date_to);
@@ -56,15 +62,23 @@ function generatePassenger() {
         <tr>
             <th colspan="3">Lotnisko wylotu</th>
             <th colspan="3">Lotnisko przylotu</th>
-            <th>Czas lotu</th>
-            <th>Cena lotu</th>
         </tr>
         <?php echo '
         <tr>
             <td>'.$from.'</td><td>'.$date1.'</td><td>'.$code_from.'</td>
             <td>'.$to.'</td><td>'.$date2.'</td><td>'.$code_to.'</td>
-            <td>'.$lenght.'</td>
-            <td>'.$price.'</td>
+        </tr>';
+        ?>
+        <tr>
+            <th>Czas lotu</th>
+            <th colspan="2">Cena lotu</th>
+            <th colspan="3">Cena lotu słownie</th>
+        </tr>        
+        <?php echo '
+        <tr>
+            <td>'.$lenght.' h</td>
+            <td colspan="2">'.$price.' PLN</td>
+            <td colspan="3">'.$price_word.'</td>
         </tr>';
         ?>
         <tr>
