@@ -1,6 +1,7 @@
 <?php
 include './includes/airports.php';
 require_once './vendor/autoload.php';
+require_once './vendor/autoload.php';
 
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     if (isset($_POST['from']) && isset($_POST['to']) && isset($_POST['date']) && 
