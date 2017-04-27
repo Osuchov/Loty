@@ -1,7 +1,10 @@
 <?php
-include './includes/airports.php';
 require_once './vendor/autoload.php';
+include './includes/airports.php';
+
 use NumberToWords\NumberToWords;
+
+ob_start();
 
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     if (isset($_POST['from']) && isset($_POST['to']) && isset($_POST['date']) && 
@@ -35,8 +38,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             $currencyTransformer = $numberToWords->getCurrencyTransformer('pl');
             $price_word = $currencyTransformer->toWords($price*100, 'PLN');
     }
-//    var_dump($date_from);
-//    var_dump($date_to);
 }
 
 function generatePassenger() {
@@ -55,10 +56,26 @@ function generatePassenger() {
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PDF flight creator</title>
+    <title>PDF</title>
 </head>
+<style>
+    table, th, td {
+        color: black;
+        text-align: center;
+        border: 1px solid black;
+        }
+</style>
 <body>
-    <table style="text-align:center">
+    <table>
+        <tr>
+            <th colspan="3">Imię pasażera</th>
+            <th colspan="3">Nazwisko pasażera</th>
+        </tr>  
+        <?php echo '
+        <tr>
+            <td colspan="3">'.$person['name'].'</td><td colspan="3">'.$person['surname'].'</td>
+        </tr>';
+        ?>   
         <tr>
             <th colspan="3">Lotnisko wylotu</th>
             <th colspan="3">Lotnisko przylotu</th>
@@ -73,23 +90,22 @@ function generatePassenger() {
             <th>Czas lotu</th>
             <th colspan="2">Cena lotu</th>
             <th colspan="3">Cena lotu słownie</th>
-        </tr>        
+        </tr>
         <?php echo '
         <tr>
             <td>'.$lenght.' h</td>
             <td colspan="2">'.$price.' PLN</td>
             <td colspan="3">'.$price_word.'</td>
         </tr>';
-        ?>
-        <tr>
-            <th colspan="3">Imię pasażera</th>
-            <th colspan="3">Nazwisko pasażera</th>
-        </tr>
-        <?php echo '
-        <tr>
-            <td colspan="3">'.$person['name'].'</td><td colspan="3">'.$person['surname'].'</td>
-        </tr>';
-        ?>        
+        ?>   
     </table>
 </body>
 </html>
+
+<?php
+$mpdf = new mPDF();
+$output = file_get_contents('pdf.php');
+$output = ob_get_flush();
+$mpdf->WriteHTML($output);
+$mpdf->Output('flight.pdf', 'D');
+?>
