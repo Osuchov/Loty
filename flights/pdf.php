@@ -1,5 +1,7 @@
 <?php
 include './includes/airports.php';
+require_once './vendor/autoload.php';
+
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     if (isset($_POST['from']) && isset($_POST['to']) && isset($_POST['date']) && 
         isset($_POST['time']) && isset($_POST['lenght']) && isset($_POST['price']) &&
@@ -23,9 +25,18 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             $date_to -> setTimezone($timezone_to);
             $date_to -> modify($date.'+'.$lenght.' hours');
             $date2 = $date_to->format('d.m.Y H:i:s');
+            
+            $person = generatePassenger();
     }
-    var_dump($date_from);
-    var_dump($date_to);
+//    var_dump($date_from);
+//    var_dump($date_to);
+}
+
+function generatePassenger() {
+    $faker = Faker\Factory:: create();
+    $passenger['name']= $faker->firstName;
+    $passenger['surname']= $faker->lastName;
+    return $passenger;
 }
 ?>
 
@@ -40,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     <title>PDF flight creator</title>
 </head>
 <body>
-    <table>
+    <table style="text-align:center">
         <tr>
             <th colspan="3">Lotnisko wylotu</th>
             <th colspan="3">Lotnisko przylotu</th>
@@ -55,7 +66,15 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             <td>'.$price.'</td>
         </tr>';
         ?>
-        
+        <tr>
+            <th colspan="3">Imię pasażera</th>
+            <th colspan="3">Nazwisko pasażera</th>
+        </tr>
+        <?php echo '
+        <tr>
+            <td colspan="3">'.$person['name'].'</td><td colspan="3">'.$person['surname'].'</td>
+        </tr>';
+        ?>        
     </table>
 </body>
 </html>
